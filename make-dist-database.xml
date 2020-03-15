@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse.ant.import?>
+
+<project basedir="." default="dist" name="dist">
+
+	<!-- P R O P E R T I E S -->
+
+	<property name="version" value="6.0.0" />
+	<property name="dbtag" value="XX" />
+	<property name="dbms" value="mysql" />
+	<property name="bnc.data.version" value="01" />
+
+	<property name="dir.project" location="." />
+
+	<property name="dir.data" location="${dir.project}/data" />
+	<property name="dir.sqlitedb" location="${dir.data}/sqlitedb" />
+
+	<property name="dir.doc" location="${dir.project}/doc" />
+	<property name="dir.stats" location="${dir.project}/doc/stats" />
+	<property name="dir.release" location="${dir.project}/release" />
+
+	<property name="dir.restore" location="${dir.project}/restore" />
+	<property name="dir.legal" location="${dir.project}/legal" />
+
+	<!-- F I L E S E T S -->
+
+	<fileset id="fs.doc" dir="${dir.doc}">
+		<include name="*html" />
+		<include name="*css" />
+		<include name="*png" />
+	</fileset>
+
+	<fileset id="fs.legal" dir="${dir.legal}">
+		<include name="*" />
+	</fileset>
+
+	<fileset id="fs.stats" dir="${dir.stats}">
+		<include name="*" />
+	</fileset>
+
+	<fileset id="fs.restore.mysql" dir="${dir.restore}">
+		<include name="restore-mysql.bat" />
+		<include name="restore-mysql.sh" />
+	</fileset>
+
+	<fileset id="fs.sqlitedb" dir="${dir.sqlitedb}/${dbtag}">
+		<include name="sqlite-${dbtag}.db" />
+	</fileset>
+
+	<!-- T A R G E T S -->
+
+	<target name="makestamp">
+		<tstamp>
+			<format property="touch.time" pattern="EEE MMM d HH:mm:ss z yyyy" unit="hour" locale="en" />
+		</tstamp>
+	</target>
+
+	<target name="dist-mysql" depends="makestamp,dist-x">
+		<echo message="done" />
+	</target>
+
+	<target name="dist-x" depends="makestamp">
+		<pack dbtype="${dbms}" domain="wn" version="${version}" dbtag="${dbtag}" domainversion="${dbtag}" />
+		<pack dbtype="${dbms}" domain="bnc" version="${version}" dbtag="${dbtag}" domainversion="${bnc.data.version}" />
+		<pack dbtype="${dbms}" domain="logs" version="${version}" dbtag="${dbtag}" domainversion="${dbtag}" />
+	</target>
+
+	<target name="dist-sqlite" depends="makestamp,dumpsqlite">
+		<packsqlite version="${version}" dbtag="${dbtag}" />
+	</target>
+
+	<target name="dump" depends="makestamp">
+		<echo message="version ${version}" />
+		<echo message="stamp ${DSTAMP}" />
+		<echo message="release ${dir.release}/" />
+		<dumpfs dbtype="${dbms}" domain="wn" version="${version}" dbtag="${dbtag}" />
+		<dumpfs dbtype="${dbms}" domain="bnc" version="${version}" dbtag="${dbtag}" />
+		<dumpfs dbtype="${dbms}" domain="logs" version="${version}" dbtag="${dbtag}" />
+		<echo-fileset filesetref="fs.doc" />
+		<echo-fileset filesetref="fs.restore.mysql" />
+		<echo-fileset filesetref="fs.restore.postgresql" />
+	</target>
+
+	<target name="dumpsqlite" depends="makestamp">
+		<echo message="version ${version}" />
+		<echo message="release ${dir.release}/" />
+		<echo-fileset filesetref="fs.sqlitedb" />
+	</target>
+
+	<!-- M A C R O S -->
+
+	<macrodef name="definefs">
+		<attribute name="dbtype" />
+		<attribute name="dbtag" />
+		<attribute name="version" />
+		<attribute name="domain" />
+		<sequential>
+			<echo message="define fs.@{dbtype}.@{domain}" />
+			<fileset id="fs.@{dbtype}.@{domain}.@{dbtag}.sql" dir="${dir.data}/@{dbtype}/@{dbtag}">
+				<include name="**@{dbtype}-@{domain}-schema.sql" />
+				<include name="**@{dbtype}-@{domain}-data.sql" />
+				<include name="**@{dbtype}-@{domain}-constrain.sql" />
+				<include name="**@{dbtype}-@{domain}-unconstrain.sql" />
+				<include name="**@{dbtype}-@{domain}-views.sql" />
+			</fileset>
+			<fileset id="fs.@{dbtype}.@{domain}.@{dbtag}.legal" dir="${dir.legal}">
+				<include name="README-@{domain}.txt" />
+				<include name="LICENSE-@{domain}.txt" />
+			</fileset>
+			<fileset id="fs.@{dbtype}.@{domain}.@{dbtag}.utils" dir="${dir.project}/sql">
+				<include name="@{dbtype}-@{domain}*query.sql" />
+				<include name="utils/@{dbtype}-@{domain}*.sql" />
+			</fileset>
+			<fileset id="fs.@{dbtype}.@{domain}.@{dbtag}.stats" dir="${dir.stats}">
+				<include name="stats-@{dbtag}.html" />
+				<include name="stats-logs-@{dbtag}.html" />
+			</fileset>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="pack">
+		<attribute name="dbtype" />
+		<attribute name="dbtag" />
+		<attribute name="version" />
+		<attribute name="domain" />
+		<attribute name="domainversion" />
+		<sequential>
+			<definefs dbtype="@{dbtype}" version="@{version}" dbtag="@{dbtag}" domain="@{domain}" />
+			<mkdir dir="${dir.release}" />
+			<echo message="jar @{dbtype}-@{version}-@{dbtag}-@{domain}-@{domainversion}.zip" />
+			<jar destfile="${dir.release}/@{dbtype}-@{version}-@{dbtag}-@{domain}-@{domainversion}.zip" update="no">
+				<fileset refid="fs.@{dbtype}.@{domain}.@{dbtag}.sql" />
+				<fileset refid="fs.restore.@{dbtype}" />
+
+				<mappedresources>
+					<fileset refid="fs.@{dbtype}.@{domain}.@{dbtag}.legal" />
+					<globmapper from="*" to="legal/*" />
+				</mappedresources>
+				<mappedresources>
+					<fileset refid="fs.@{dbtype}.@{domain}.@{dbtag}.stats" />
+					<globmapper from="*" to="stats/*" />
+				</mappedresources>
+				<mappedresources>
+					<fileset refid="fs.doc" />
+					<globmapper from="*" to="doc/*" />
+				</mappedresources>
+				<manifest>
+					<section name="wordnet/sql/data">
+						<attribute name="Specification-Title" value="SQL-@{dbtype}-@{domain}-@{version}-@{dbtag}-@{domainversion}" />
+						<attribute name="Implementation-Title" value="SQL-@{dbtype}-@{domain}-@{version}-@{dbtag}-@{domainversion}" />
+						<attribute name="Specification-Version" value="@{dbtag}-@{domainversion}" />
+						<attribute name="Implementation-Version" value="@{version}-@{dbtag}-@{domainversion}-${DSTAMP}" />
+						<attribute name="Specification-Vendor" value="Bernard Bou, 1313ou@gmail.com" />
+						<attribute name="Implementation-Vendor" value="Bernard Bou, 1313ou@gmail.com" />
+						<attribute name="Built-By" value="Bernard Bou, 1313ou@gmail.com" />
+					</section>
+				</manifest>
+			</jar>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="packsqlite">
+		<attribute name="dbtag" />
+		<attribute name="version" />
+		<sequential>
+			<mkdir dir="${dir.release}" />
+			<echo>sqlite-@{dbtag}.db</echo>
+			<jar destfile="${dir.release}/sqlite-@{version}-@{dbtag}.zip" update="no">
+				<fileset refid="fs.sqlitedb"/>
+				<mappedresources>
+					<fileset refid="fs.legal" />
+					<globmapper from="*" to="legal/*" />
+				</mappedresources>
+				<mappedresources>
+					<fileset dir="${dir.stats}">
+						<include name="stats-@{dbtag}.html" />
+						<include name="stats-logs-@{dbtag}.html" />
+					</fileset>
+					<globmapper from="*" to="stats/*" />
+				</mappedresources>
+				<mappedresources>
+					<fileset refid="fs.doc" />
+					<globmapper from="*" to="doc/*" />
+				</mappedresources>
+				<manifest>
+					<section name="wordnet/sql/data">
+						<attribute name="Specification-Title" value="SQL-sqlite-@{version}-@{dbtag}" />
+						<attribute name="Implementation-Title" value="SQL-sqlite-@{version}-@{dbtag}" />
+						<attribute name="Specification-Version" value="@{dbtag}" />
+						<attribute name="Implementation-Version" value="@{version}-@{dbtag}-${DSTAMP}" />
+						<attribute name="Specification-Vendor" value="Bernard Bou, 1313ou@gmail.com" />
+						<attribute name="Implementation-Vendor" value="Bernard Bou, 1313ou@gmail.com" />
+						<attribute name="Built-By" value="Bernard Bou, 1313ou@gmail.com" />
+					</section>
+				</manifest>
+			</jar>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="dumpfs">
+		<attribute name="dbtype" />
+		<attribute name="domain" />
+		<attribute name="version" />
+		<attribute name="dbtag" />
+		<sequential>
+			<definefs dbtype="@{dbtype}" domain="@{domain}" version="@{version}" dbtag="@{dbtag}" />
+			<echo message="[filesets] for @{dbtype}.@{domain}" />
+			<echo-fileset filesetref="fs.@{dbtype}.@{domain}.@{dbtag}.sql" />
+			<echo-fileset filesetref="fs.@{dbtype}.@{domain}.@{dbtag}.legal" />
+			<echo-fileset filesetref="fs.@{dbtype}.@{domain}.@{dbtag}.logs" />
+			<echo-fileset filesetref="fs.@{dbtype}.@{domain}.@{dbtag}.utils" />
+			<echo-fileset filesetref="fs.@{dbtype}.@{domain}.@{dbtag}.stats" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="echo-fileset">
+		<attribute name="filesetref" />
+		<sequential>
+			<pathconvert pathsep="${line.separator}" property="@{filesetref}.echopath">
+				<path>
+					<fileset refid="@{filesetref}" />
+				</path>
+			</pathconvert>
+			<echo>[fileset] @{filesetref}</echo>
+			<echo>${@{filesetref}.echopath}</echo>
+		</sequential>
+	</macrodef>
+
+</project>
