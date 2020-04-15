@@ -104,5 +104,8 @@ ls -1hs ${files}
 echo -e ${Z}
 popd > /dev/null
 
+echo -e "${M}X E W N   G I T H U B   Z I P${Z}"
+./pack-github.sh ${dbtag}
+
 echo -e "${B}done: xewn${disttag}${Z}"
 

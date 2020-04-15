@@ -9,16 +9,18 @@ ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-6.0.0.jar												sqlbuilder/sqlbui
 ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-6.0.0.jar 	sqlbuilder/wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm.jar
 ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-6.0.0.jar 	sqlbuilder/sqlbuilder.jar
 
-#./make-data-wndb.sh ${DBTAG}
-#TODO copy to wndb dict
+if [ "$1" == "-r" ]; then
+	echo "Update to wndb dict by copying data"
+	./make-data-wndb.sh ${DBTAG}
+fi
 
-#./make-data-sqldb.sh ${DBTAG} ${DB}
-#TODO sql statements
-
+./make-data-sqldb.sh ${DBTAG} ${DB}
 ./make-data-dist.sh ${DBTAG}
 ./make-semantikos.sh ${DBTAG}
 ./make-xewn.sh ${DBTAG}
 
-#./upload.sh ${DBTAG}
-#TODO upload
+./upload-mysql.sh ${DBTAG}
+./upload-sqlite.sh ${DBTAG}
+./upload-semantikos.sh ${DBTAG}
+./upload-git.sh ${DBTAG}
 
