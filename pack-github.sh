@@ -8,6 +8,8 @@ if [ -z "${dbtag}" ]; then
 	exit 1
 fi
 
+VERSION="6.1.0"
+
 # D I R S
 
 githubdir=github
@@ -24,7 +26,7 @@ cp data/xewn/${dbtag}/xewn.db.zip ${sqlite_target}
 zip -r ${sqlite_target} legal/ -x '*bnc*.txt'
 zip -r ${sqlite_target} doc/sqlunet
 
-cp release/mysql-6.0.0-${dbtag}-wn-${dbtag}.zip ${mysql_target}
+cp release/mysql-${VERSION}-${dbtag}-wn-${dbtag}.zip ${mysql_target}
 zip -r ${mysql_target} legal/ -x '*bnc*.txt'
 zip -r ${mysql_target} doc/
 

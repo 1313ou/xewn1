@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="6.0.0"
+VERSION="6.1.0"
 DBTAG="$1"
 if [ -z "${DBTAG}" ]; then
 	echo "Missing tag"
@@ -22,7 +22,9 @@ Z='\u001b[0m'
 SITE=frs.sourceforge.net
 USER=bbou,sqlunet
 REMOTEDIR=/home/frs/project/s/sq/sqlunet
-REMOTE_MYSQL_SUBDIR=forthcoming/xewn/mysql
+REMOTE_MYSQL_SUBDIR0=${VERSION}
+REMOTE_MYSQL_SUBDIR1=${VERSION}/xewn
+REMOTE_MYSQL_SUBDIR=${VERSION}/xewn/mysql
 
 # D I R S
 
@@ -61,7 +63,9 @@ sftp $USER@$SITE <<EOF
 lcd ${datadir}
 lls -l mysql*.*
 
-# current
+-mkdir $REMOTEDIR/$REMOTE_MYSQL_SUBDIR0
+-mkdir $REMOTEDIR/$REMOTE_MYSQL_SUBDIR1
+-mkdir $REMOTEDIR/$REMOTE_MYSQL_SUBDIR
 cd $REMOTEDIR/$REMOTE_MYSQL_SUBDIR
 ls -l mysql*.*
 put mysql-${VERSION}-${DBTAG}-wn-XX.zip

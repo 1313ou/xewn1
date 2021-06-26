@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="6.0.0"
+VERSION="6.1.0"
 DBTAG="$1"
 if [ -z "${DBTAG}" ]; then
 	echo "Missing tag"
@@ -22,8 +22,9 @@ Z='\u001b[0m'
 SITE=frs.sourceforge.net
 USER=bbou,sqlunet
 REMOTEDIR=/home/frs/project/s/sq/sqlunet
-REMOTE_SEMANTIKOS_SUBDIR=current/android
-REMOTE_SEMANTIKOS_SUBDIR2=forthcoming/semantikos
+REMOTE_SEMANTIKOS_SUBDIR0=${VERSION}
+REMOTE_SEMANTIKOS_SUBDIR1=${VERSION}/android
+REMOTE_SEMANTIKOS_SUBDIR2=${VERSION}/semantikos
 
 # D I R S
 
@@ -49,7 +50,7 @@ ls -1hs ${files}
 echo -e ${Z}
 popd > /dev/null
 
-echo -e "${C}$REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR${Z}"
+echo -e "${C}$REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR1${Z}"
 echo -e "${C}$REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR2${Z}"
 echo -e "${R}"
 read -p "Are you sure you want to upload? " -n 1 -r
@@ -67,8 +68,9 @@ sftp $USER@$SITE <<EOF
 lcd ${datadir}
 lls -l *-ewn.*
 
-# current
-cd $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR
+-mkdir $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR0
+-mkdir $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR1
+cd $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR1
 ls -l *-ewn.*
 put distrib-ewn.hsize
 put distrib-ewn.md5
@@ -81,7 +83,7 @@ put sqlunet-ewn.sql.zip
 put sqlunet-ewn.sql.zip.md5
 ls -l *-ewn.*
 
-# forthcoming
+-mkdir $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR2
 cd $REMOTEDIR/$REMOTE_SEMANTIKOS_SUBDIR2
 ls -l *-ewn.*
 put distrib-ewn.hsize

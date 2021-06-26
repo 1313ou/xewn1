@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="6.0.0"
+VERSION="6.1.0"
 DBTAG="$1"
 if [ -z "${DBTAG}" ]; then
 	echo "Missing tag"
@@ -22,7 +22,9 @@ Z='\u001b[0m'
 SITE=frs.sourceforge.net
 USER=bbou,sqlunet
 REMOTEDIR=/home/frs/project/s/sq/sqlunet
-REMOTE_SQLITE_SUBDIR=forthcoming/xewn/sqlite
+REMOTE_SQLITE_SUBDIR0=${VERSION}
+REMOTE_SQLITE_SUBDIR1=${VERSION}/xewn
+REMOTE_SQLITE_SUBDIR=${VERSION}/xewn/sqlite
 
 # D I R S
 
@@ -60,6 +62,9 @@ sftp $USER@$SITE <<EOF
 lcd ${datadir}
 lls -l
 
+-mkdir $REMOTEDIR/$REMOTE_SQLITE_SUBDIR0
+-mkdir $REMOTEDIR/$REMOTE_SQLITE_SUBDIR1
+-mkdir $REMOTEDIR/$REMOTE_SQLITE_SUBDIR
 cd $REMOTEDIR/$REMOTE_SQLITE_SUBDIR
 ls -l *
 put sqlite-${DBTAG}.db

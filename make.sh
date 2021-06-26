@@ -2,12 +2,12 @@
 
 DBTAG=XX
 DB=xewn
-VERSION=6.0.0
+VERSION=6.0.1-SNAPSHOT
 
 SQLBUILDERHOME=/opt/devel/sqlbuilder/sqlbuilder/
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-6.0.0.jar												sqlbuilder/sqlbuilder-wn.jar
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-6.0.0.jar 	sqlbuilder/wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm.jar
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-6.0.0.jar 	sqlbuilder/sqlbuilder.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-${VERSION}.jar											sqlbuilder/sqlbuilder-wn.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${VERSION}.jar 	sqlbuilder/wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${VERSION}.jar 	sqlbuilder/sqlbuilder.jar
 
 if [ "$1" == "-r" ]; then
 	echo "Update to wndb dict by copying data"
@@ -22,5 +22,5 @@ fi
 ./upload-mysql.sh ${DBTAG}
 ./upload-sqlite.sh ${DBTAG}
 ./upload-semantikos.sh ${DBTAG}
-./upload-git.sh ${DBTAG}
+./upload-github.sh ${DBTAG}
 
