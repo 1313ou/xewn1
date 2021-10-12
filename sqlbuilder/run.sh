@@ -38,4 +38,4 @@ RUNJAR="sqlbuilder.jar"
 
 #echo "[JAVA]   $JAVA_HOME" 1>&2
 #echo "[ARGS]   $@" 1>&2
-$JAVA_HOME/jre/bin/java -Xms512M -Xmx1024M -jar ${RUNJAR} -jdbc:${CONFDIR}/${JDBC} -data:${CONFDIR}/${DATA} -todo:${CONFDIR}/${TODO} $@
+$JAVA_HOME/bin/java -Xms512M -Xmx1024M -jar ${RUNJAR} -jdbc:${CONFDIR}/${JDBC} -data:${CONFDIR}/${DATA} -todo:${CONFDIR}/${TODO} $@

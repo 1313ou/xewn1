@@ -2,12 +2,12 @@
 
 DBTAG=XX
 DB=xewn
-VERSION=6.1.0-SNAPSHOT
+SQLBUILDERVERSION=6.1.0-SNAPSHOT
 
 SQLBUILDERHOME=/opt/devel/sqlbuilder/sqlbuilder/
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-${VERSION}.jar											sqlbuilder/sqlbuilder-wn.jar
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${VERSION}.jar 	sqlbuilder/wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm.jar
-ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${VERSION}.jar 	sqlbuilder/sqlbuilder.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-${SQLBUILDERVERSION}.jar												sqlbuilder/sqlbuilder-wn.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${SQLBUILDERVERSION}.jar 	sqlbuilder/wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm.jar
+ln -sf $SQLBUILDERHOME/core/sqlbuilder-wn-legacy-vn-pb-fn-bnc-sumo-xwn-glf-ilfwn-pm-${SQLBUILDERVERSION}.jar 	sqlbuilder/sqlbuilder.jar
 
 #if [ "$1" == "-r" ]; then
 #	echo "Update to wndb dict by copying data"

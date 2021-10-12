@@ -8,7 +8,7 @@ if [ -z "${dbtag}" ]; then
 	exit 1
 fi
 
-VERSION="6.1.0"
+VERSION="6.2.0"
 
 # D I R S
 
