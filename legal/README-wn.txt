@@ -1,5 +1,5 @@
 This includes
-- the core English WordNet database.
+- the core Open English WordNet database.
 
-PWN: https://wordnet.princeton.edu/
-EWN: https://github.com/globalwordnet/english-wordnet
+PWN:  https://wordnet.princeton.edu/
+OEWN: https://github.com/globalwordnet/english-wordnet

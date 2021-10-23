@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS sources (
 INSERT INTO `sources` (idsource,name,version,wnversion,url,provider,reference) VALUES (1,'WordNet','3.1','3.1','http://wordnet.princeton.edu/','Princeton University','George A. Miller (1995). WordNet: A Lexical Database for English. Communications of the ACM Vol. 38, No. 11: 39-41.
 Christiane Fellbaum (1998, ed.) WordNet: An Electronic Lexical Database. Cambridge, MA: MIT Press.'),
  (7,'BNC','2001','any','http://ucrel.lancs.ac.uk/bncfreq/',NULL,NULL),
- (30,'English WordNet','XX','XX','https://github.com/globalwordnet/english-wordnet','Global WordNet Association',NULL);
+ (30,'Open English Wordnet','2021','3.1','https://github.com/globalwordnet/english-wordnet','Global WordNet Association',NULL);
 

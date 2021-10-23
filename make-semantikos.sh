@@ -58,7 +58,7 @@ echo -e "${M}S E M A N T I K O S   C L E A N U P${Z}"
 echo "drop logs"
 sqlite3 ${target} "DROP TABLE logs"
 echo "delete sources except wn"
-sqlite3 ${target} "DELETE FROM sources WHERE name <> 'WordNet' AND name <> 'English WordNet'"
+sqlite3 ${target} "DELETE FROM sources WHERE name <> 'WordNet' AND name <> 'Open English Wordnet'"
 echo "vacuum"
 sqlite3 ${target} "VACUUM;"
 
