@@ -33,7 +33,7 @@ files="${files_dist} ${files_db} ${files_dbzip} ${files_sqlzip}"
 
 # M A I N
 
-echo -e "${Y}D A T A  T O  C O P Y   T O   B I T B U C K E T   R E P O${Z}"
+echo -e "${Y}S E M A N T I K O S   D B  +  S Q L  U P L O A D   T O   B I T B U C K E T   G I T   R E P O${Z}"
 for f in ${files}; do
 	c1=${G}
 	if [ ! -e "${datadir}/${f}" ];then

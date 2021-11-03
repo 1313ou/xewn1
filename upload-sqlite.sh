@@ -38,7 +38,7 @@ files="sqlite-${DBTAG}.db"
 
 # M A I N
 
-echo -e "${Y}D A T A  T O  U P L O A D${Z}"
+echo -e "${Y}S Q L I T E   T O  U P L O A D   T O   S O U R C E F O R G E${Z}"
 
 pushd ${datadir} > /dev/null
 echo -e ${G}

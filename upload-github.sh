@@ -34,7 +34,7 @@ files=([sqlite]="xewnXX-sqlite.zip" [mysql]="xewnXX-mysql.zip")
 
 # M A I N
 
-echo -e "${Y}D A T A  T O  C O P Y   T O   G I T H U B${Z}"
+echo -e "${Y}M Y S Q L   +   S Q L I T E   T O  U P L O A D   T O   G I T H U B${Z}"
 for k in ${!files[@]}; do 
 	d="${datadir}/${k}"
 	for f in ${files[$k]}; do

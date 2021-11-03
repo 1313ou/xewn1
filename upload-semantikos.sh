@@ -42,7 +42,7 @@ files="${files_dist} ${files_db} ${files_dbzip} ${files_sqlzip}"
 
 # M A I N
 
-echo -e "${Y}D A T A  T O  U P L O A D${Z}"
+echo -e "${Y}S E M A N T I K O S   D B   +   S Q L   T O  U P L O A D   T O   S O U R C E F O R G E${Z}"
 
 pushd ${datadir} > /dev/null
 echo -e ${G}

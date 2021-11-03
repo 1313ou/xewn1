@@ -38,7 +38,7 @@ files="mysql-${VERSION}-${DBTAG}-wn-XX.zip mysql-${VERSION}-${DBTAG}-logs-XX.zip
 
 # M A I N
 
-echo -e "${Y}D A T A  T O  U P L O A D${Z}"
+echo -e "${Y}M Y S Q L   T O  U P L O A D   T O   S O U R C E F O R G E${Z}"
 
 pushd ${datadir} > /dev/null
 echo -e ${G}
