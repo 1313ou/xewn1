@@ -53,6 +53,7 @@ if ! [[ $REPLY =~ ^[Yy]$ ]]; then
     exit 2
 fi
 echo 'Proceeding ...'
+echo -e "${Y}upload${Z}"
 for f in ${files}; do
 	echo -e "${B}${f}${Z}"
 	cp -P ${datadir}/${f} ${bitbucketdir}/
@@ -65,6 +66,7 @@ if ! [[ $REPLY =~ ^[Yy]$ ]]; then
     exit 2
 fi
 echo 'Proceeding ...'
+echo -e "${Y}upload${Z}"
 pushd ${bitbucketdir} > /dev/null
 git status
 git add .

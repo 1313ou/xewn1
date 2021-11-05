@@ -61,7 +61,7 @@ if ! [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 echo 'Proceeding ...'
 
-echo -e "${Y}U P L O A D${Z}"
+echo -e "${Y}upload${Z}"
 
 sftp $USER@$SITE <<EOF
 
